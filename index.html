@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>20/11 · Chúc Mừng 20/11 · Full 5 Parts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:#000}
+body{
+  font-family:'Be Vietnam Pro','Quicksand',sans-serif;
+  display:flex;justify-content:center;align-items:center;
+  perspective:1400px;
+}
+
+#stage{
+  position:relative;width:100vw;height:100vh;overflow:hidden;
+  background:#000;transform-style:preserve-3d;
+}
+
+.layer{
+  position:absolute;inset:0;width:100%;height:100%;
+  transform-style:preserve-3d;pointer-events:none;
+  opacity:0;visibility:hidden;
+}
+
+/* ============================================================
+   OVERLAY "CHẠM ĐỂ BẮT ĐẦU"
+   ============================================================ */
+#unlockOverlay{
+  position:fixed;inset:0;z-index:99999;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.88);backdrop-filter:blur(12px);
+  cursor:pointer;pointer-events:auto;
+  transition:opacity .5s ease;
+}
+#unlockOverlay.show{display:flex}
+#unlockOverlay.hide{opacity:0;pointer-events:none}
+#unlockOverlay .unlock-box{
+  text-align:center;padding:40px 50px;border-radius:24px;
+  background:rgba(23,225,225,.08);
+  border:2px solid rgba(23,225,225,.5);
+  box-shadow:0 0 60px rgba(23,225,225,.4);
+  animation:unlockPulse 2s ease-in-out infinite;
+}
+@keyframes unlockPulse{
+  0%,100%{box-shadow:0 0 40px rgba(23,225,225,.3)}
+  50%{box-shadow:0 0 80px rgba(23,225,225,.7)}
+}
+#unlockOverlay .unlock-icon{
+  font-size:64px;margin-bottom:16px;display:block;
+  animation:unlockBounce 1.2s ease-in-out infinite;
+}
+@keyframes unlockBounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+#unlockOverlay .unlock-title{
+  font-size:22px;font-weight:800;color:#17e1e1;
+  letter-spacing:3px;text-transform:uppercase;
+  text-shadow:0 0 20px rgba(23,225,225,.8);margin-bottom:8px;
+}
+#unlockOverlay .unlock-sub{
+  font-size:13px;color:rgba(255,255,255,.7);
+  letter-spacing:2px;text-transform:uppercase;
+}
+
+/* ============================================================
+   NÚT ĐIỀU KHIỂN NHẠC
+   ============================================================ */
+#musicToggle{
+  position:fixed;top:16px;right:16px;z-index:9999;
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(23,225,225,.15);
+  border:2px solid rgba(23,225,225,.6);
+  color:#17e1e1;font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px rgba(23,225,225,.4);
+  backdrop-filter:blur(8px);
+  transition:all .3s ease;pointer-events:auto;font-family:inherit;
+}
+#musicToggle:hover{
+  background:rgba(23,225,225,.3);
+  box-shadow:0 0 30px rgba(23,225,225,.8);
+  transform:scale(1.08);
+}
+#musicToggle.playing{animation:musicPulse 1.5s ease-in-out infinite}
+@keyframes musicPulse{
+  0%,100%{box-shadow:0 0 20px rgba(23,225,225,.4)}
+  50%{box-shadow:0 0 40px rgba(23,225,225,.9)}
+}
+
+#replayBtn{
+  position:fixed;bottom:20px;right:20px;z-index:9999;
+  padding:10px 20px;border-radius:100px;
+  background:rgba(244,180,70,.15);
+  border:2px solid rgba(244,180,70,.6);
+  color:#f4b446;font-size:14px;font-weight:700;
+  cursor:pointer;letter-spacing:2px;
+  box-shadow:0 0 20px rgba(244,180,70,.3);
+  backdrop-filter:blur(8px);
+  opacity:0;visibility:hidden;
+  transition:all .4s ease;pointer-events:auto;font-family:inherit;
+}
+#replayBtn.show{opacity:1;visibility:visible}
+#replayBtn:hover{
+  background:rgba(244,180,70,.3);
+  box-shadow:0 0 30px rgba(244,180,70,.7);
+  transform:scale(1.05);
+}
+
+/* ============================================================
+   P0 — INTRO
+   ============================================================ */
+#p0{
+  z-index:100;
+  background:url('images/intro-bg.jpg') center/cover no-repeat,
+             radial-gradient(circle at 50% 50%,#1a0a2e 0%,#000 70%);
+  opacity:1;visibility:visible;
+  animation:p0Fade 3.2s cubic-bezier(.42,0,.58,1) forwards;
+}
+@keyframes p0Fade{0%,84%{opacity:1}100%{opacity:0;visibility:hidden}}
+#p0::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(0,0,0,.2) 0%,rgba(0,0,0,.85) 100%);
+}
+.p0-glow{
+  position:absolute;width:70vmin;height:70vmin;border-radius:50%;
+  background:radial-gradient(circle,rgba(23,225,225,.4),transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:p0GlowPulse 2.6s ease-in-out infinite;
+}
+@keyframes p0GlowPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(.8);opacity:.6}
+  50%{transform:translate(-50%,-50%) scale(1.2);opacity:1}
+}
+.p0-title{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;z-index:2;
+}
+.p0-title .t1{
+  display:block;font-size:clamp(28px,7vw,72px);font-weight:900;
+  letter-spacing:6px;text-transform:uppercase;color:#fff;
+  text-shadow:0 0 20px #17e1e1,0 0 60px #17e1e1,0 0 100px rgba(23,225,225,.6);
+  animation:p0TitlePop .9s cubic-bezier(.2,.9,.3,1) both;
+}
+.p0-title .t2{
+  display:block;margin-top:14px;font-size:clamp(14px,2.6vw,24px);
+  font-weight:600;letter-spacing:10px;color:#f4b446;
+  text-shadow:0 0 18px rgba(244,180,70,.8);
+  animation:p0TitlePop .9s .15s cubic-bezier(.2,.9,.3,1) both;
+}
+@keyframes p0TitlePop{
+  0%{opacity:0;transform:translateY(30px) scale(.85);filter:blur(8px)}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+.p0-lightning{
+  position:absolute;inset:0;mix-blend-mode:screen;opacity:0;
+  background:linear-gradient(115deg,transparent 40%,rgba(23,225,225,.15) 48%,rgba(255,255,255,.5) 50%,rgba(23,225,225,.15) 52%,transparent 60%);
+  background-size:300% 300%;
+  animation:p0Flash 2.6s ease-in-out infinite;
+}
+@keyframes p0Flash{
+  0%,85%,100%{opacity:0;background-position:0% 0%}
+  87%{opacity:1;background-position:100% 0%}
+  89%{opacity:.3}
+  91%{opacity:1;background-position:0% 100%}
+}
+
+/* ============================================================
+   P1 — TƯỚNG 1,2
+   ============================================================ */
+#p1{
+  z-index:90;
+  animation:p1In .4s 3.084s cubic-bezier(.42,0,.58,1) forwards,
+            p1Out .4s 6.85s cubic-bezier(.42,0,.58,1) forwards;
+}
+@keyframes p1In{to{opacity:1;visibility:visible}}
+@keyframes p1Out{to{opacity:0;visibility:hidden}}
+
+#p1 .bg{
+  position:absolute;inset:0;
+  background:url('images/bg-main.jpg') center/cover no-repeat,
+             linear-gradient(135deg,#0a0a18,#1a0a2e 50%,#000);
+  animation:bgHexShift 10s linear infinite;
+}
+@keyframes bgHexShift{
+  0%{background-position:0 0,0 0}
+  100%{background-position:200px 200px,80px 80px}
+}
+#p1 .bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(182,1,0,.25),transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(23,225,225,.12),transparent 55%),
+    radial-gradient(circle at 50% 50%,transparent 40%,rgba(0,0,0,.75) 100%);
+}
+#p1 .cloud{
+  position:absolute;inset:-20%;
+  background:
+    radial-gradient(ellipse at 30% 40%,rgba(126,115,159,.45),transparent 55%),
+    radial-gradient(ellipse at 70% 60%,rgba(85,250,60,.18),transparent 50%),
+    radial-gradient(ellipse at 50% 20%,rgba(141,104,248,.3),transparent 55%);
+  filter:blur(2px);
+  animation:cloudWarp 6s linear infinite;
+}
+@keyframes cloudWarp{
+  0%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-6%) scale(1.05)}
+  100%{transform:translateY(0) scale(1)}
+}
+#p1 .gameProfile{
+  position:absolute;top:4%;left:5%;
+  width:38vmin;height:22vmin;
+  background:linear-gradient(135deg,rgba(23,225,225,.12),rgba(26,26,46,.9));
+  border:2px solid rgba(23,225,225,.5);border-radius:16px;
+  box-shadow:0 0 30px rgba(23,225,225,.3),inset 0 0 30px rgba(0,0,0,.5);
+  overflow:hidden;padding:2%;
+  transform:perspective(800px) rotateY(-18deg) rotateX(8deg);
+  animation:flip3 1.2s cubic-bezier(.2,.9,.3,1) both;
+  transform-origin:right center;
+}
+@keyframes flip3{
+  0%{opacity:0;transform:perspective(800px) rotateY(80deg) rotateX(20deg) scale(.6)}
+  100%{opacity:1;transform:perspective(800px) rotateY(-18deg) rotateX(8deg) scale(1)}
+}
+#p1 .gameProfile .gp-title{
+  font-size:clamp(9px,1.3vmin,14px);font-weight:800;color:#17e1e1;
+  letter-spacing:3px;text-transform:uppercase;margin-bottom:4%;
+}
+#p1 .gameProfile .gp-row{display:flex;align-items:center;gap:6%}
+#p1 .gameProfile .gp-avatar{
+  width:8vmin;height:8vmin;border-radius:10px;
+  background:url('images/avatar-gv.jpg') center/cover no-repeat,
+             linear-gradient(135deg,#17e1e1,#0a6b6b);
+  box-shadow:0 0 15px rgba(23,225,225,.6);
+  border:1px solid rgba(255,255,255,.3);flex-shrink:0;
+}
+#p1 .gameProfile .gp-name{
+  font-size:clamp(10px,1.6vmin,16px);font-weight:800;color:#fff;
+  text-shadow:0 0 10px rgba(23,225,225,.8);
+}
+#p1 .gameProfile .gp-sub{
+  font-size:clamp(8px,1.1vmin,11px);color:#f4b446;
+  letter-spacing:2px;text-transform:uppercase;margin-top:2%;
+}
+#p1 .expBar{position:absolute;top:30%;left:5%;width:30vmin}
+#p1 .expBar .label{
+  display:flex;justify-content:space-between;
+  font-size:clamp(8px,1.1vmin,11px);font-weight:700;
+  color:#17e1e1;letter-spacing:1px;margin-bottom:4px;
+}
+#p1 .expBar .track{
+  height:6px;background:rgba(255,255,255,.08);
+  border-radius:10px;overflow:hidden;
+  border:1px solid rgba(23,225,225,.25);
+}
+#p1 .expBar .fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,#17e1e1,#f4b446);
+  box-shadow:0 0 12px rgba(23,225,225,.8);border-radius:10px;
+  animation:expGrow 2s 4.5s cubic-bezier(.2,.9,.3,1) forwards;
+}
+@keyframes expGrow{to{width:90%}}
+#p1 .skinBig{
+  position:absolute;top:8%;right:6%;width:34vmin;height:30vmin;
+  border-radius:20px;overflow:hidden;
+  border:2px solid rgba(23,225,225,.4);
+  box-shadow:0 0 40px rgba(23,225,225,.3),0 0 80px rgba(244,180,70,.15);
+  animation:skinBigFloat 4s ease-in-out infinite alternate;
+}
+@keyframes skinBigFloat{
+  0%{transform:translateY(0) rotate(-2deg)}
+  100%{transform:translateY(-8px) rotate(2deg)}
+}
+#p1 .skinBig .inner{
+  position:absolute;inset:0;
+  background:url('images/skin-big.jpg') center/cover no-repeat,
+             linear-gradient(135deg,#1a1a2e,#0a0a18);
+  filter:grayscale(.3) contrast(1.1);
+}
+#p1 .skinBig .inner::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(45deg,transparent 30%,rgba(23,225,225,.15) 50%,transparent 70%);
+  animation:shineSweep 3s linear infinite;
+}
+@keyframes shineSweep{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(100%)}
+}
+#p1 .playerName{
+  position:absolute;top:52%;left:5%;
+  font-size:clamp(18px,3.4vmin,38px);font-weight:900;color:#17e1e1;
+  letter-spacing:2px;text-transform:uppercase;transform:rotate(9deg);
+  text-shadow:2px 2px 0 #0a6b6b,4px 4px 0 #064040,0 0 20px #17e1e1,0 0 50px rgba(23,225,225,.6);
+  animation:nameFlip .8s 3.4s cubic-bezier(.2,.9,.3,1) both,
+            nameGlow 2.5s ease-in-out infinite alternate;
+}
+@keyframes nameFlip{
+  0%{opacity:0;transform:rotate(9deg) scale(.5) skewX(20deg);filter:blur(6px)}
+  100%{opacity:1;transform:rotate(9deg) scale(1) skewX(0);filter:blur(0)}
+}
+@keyframes nameGlow{
+  0%{text-shadow:2px 2px 0 #0a6b6b,4px 4px 0 #064040,0 0 20px #17e1e1,0 0 50px rgba(23,225,225,.6)}
+  100%{text-shadow:2px 2px 0 #0a6b6b,4px 4px 0 #064040,0 0 35px #17e1e1,0 0 90px rgba(23,225,225,.9)}
+}
+#p1 .champName{
+  position:absolute;bottom:18%;left:5%;
+  font-size:clamp(14px,2.4vmin,26px);font-weight:800;color:#f4b446;
+  letter-spacing:3px;text-transform:uppercase;
+  text-shadow:0 0 15px rgba(244,180,70,.9),0 0 40px rgba(244,180,70,.5);
+  animation:champPop .7s 3.6s cubic-bezier(.2,.9,.3,1) both;
+}
+@keyframes champPop{
+  0%{opacity:0;transform:translateX(-40px) rotate(-10deg)}
+  100%{opacity:1;transform:translateX(0) rotate(-4deg)}
+}
+#p1 .statsPanel{
+  position:absolute;bottom:5%;left:5%;
+  display:flex;flex-direction:column;gap:6px;
+  animation:statsIn .6s 3.8s cubic-bezier(.2,.9,.3,1) both;
+}
+@keyframes statsIn{
+  0%{opacity:0;transform:translateY(30px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+#p1 .stat-item{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(0,0,0,.55);border-left:3px solid #17e1e1;
+  padding:5px 14px 5px 10px;border-radius:0 12px 12px 0;
+  backdrop-filter:blur(4px);
+}
+#p1 .stat-item .icon{font-size:clamp(12px,1.8vmin,18px)}
+#p1 .stat-item .label{font-size:clamp(9px,1.2vmin,13px);color:#fff;font-weight:700;letter-spacing:1px}
+#p1 .stat-item .num{font-size:clamp(10px,1.4vmin,15px);color:#17e1e1;font-weight:800}
+#p1 .titleBanner{
+  position:absolute;bottom:12%;right:5%;width:42vmin;
+  animation:bannerIn .8s 3.5s cubic-bezier(.2,.9,.3,1) both;
+}
+@keyframes bannerIn{
+  0%{opacity:0;transform:translateX(60px) skewX(-15deg)}
+  100%{opacity:1;transform:translateX(0) skewX(0)}
+}
+#p1 .titleBanner .bg{
+  position:relative;height:6vmin;border-radius:8px;overflow:hidden;
+  background:linear-gradient(90deg,#0a6b6b,#17e1e1 40%,#f4b446 100%);
+  box-shadow:0 0 25px rgba(23,225,225,.6);
+  transform:skewX(-8deg);border:1px solid rgba(255,255,255,.3);
+}
+#p1 .titleBanner .bg::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);
+  animation:wipe2 2.5s ease-in-out infinite;
+}
+@keyframes wipe2{
+  0%{transform:translateX(-120%) skewX(-20deg)}
+  60%{transform:translateX(120%) skewX(-20deg)}
+  100%{transform:translateX(120%) skewX(-20deg)}
+}
+#p1 .titleBanner .text{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:clamp(10px,1.8vmin,18px);font-weight:900;color:#fff;
+  letter-spacing:4px;text-transform:uppercase;
+  text-shadow:0 0 10px rgba(0,0,0,.8);transform:skewX(8deg);
+  animation:blink2 4s steps(1) infinite;
+}
+@keyframes blink2{
+  0%,92%,100%{opacity:1}
+  94%{opacity:.2}
+  96%{opacity:1}
+  98%{opacity:.2}
+}
+#p1 .titleBanner .sub{
+  margin-top:6px;font-size:clamp(8px,1.1vmin,11px);color:#f4b446;
+  letter-spacing:3px;text-transform:uppercase;font-weight:700;text-align:right;
+}
+.pulse-ring{
+  position:absolute;width:10vmin;height:10vmin;
+  border:2px solid #17e1e1;border-radius:50%;opacity:0;
+  animation:pulseRing 8s linear infinite;pointer-events:none;
+}
+@keyframes pulseRing{
+  0%{opacity:0;transform:scale(.2)}
+  2%{opacity:.6;transform:scale(.3)}
+  10%{opacity:0;transform:scale(1.5)}
+  100%{opacity:0}
+}
+.scanline{
+  position:absolute;inset:0;
+  background:linear-gradient(0deg,transparent,rgba(23,225,225,.04) 50%,transparent);
+  background-size:100% 8px;animation:scanMove 1s linear infinite;
+  mix-blend-mode:screen;pointer-events:none;opacity:.5;
+}
+@keyframes scanMove{
+  0%{background-position:0 0}
+  100%{background-position:0 100%}
+}
+
+/* ============================================================
+   P2 — TRANSITION
+   ============================================================ */
+#p2{
+  z-index:80;
+  background:url('images/transition-bg.jpg') center/cover no-repeat,#000;
+  animation:p2In .5s 6.85s cubic-bezier(.42,0,.58,1) forwards,
+            p2Out .5s 9.5s cubic-bezier(.42,0,.58,1) forwards;
+}
+@keyframes p2In{from{opacity:0;visibility:visible}to{opacity:1;visibility:visible}}
+@keyframes p2Out{to{opacity:0;visibility:hidden}}
+.p2-glitch{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,#17e1e1 0 33%,#f4b446 33% 66%,#ff5e7e 66% 100%);
+  mix-blend-mode:screen;
+  animation:p2Glitch .8s steps(2) infinite;
+}
+@keyframes p2Glitch{
+  0%,100%{transform:translate(0,0);opacity:.15;filter:hue-rotate(0deg)}
+  25%{transform:translate(-8px,4px);opacity:.4;filter:hue-rotate(40deg)}
+  50%{transform:translate(6px,-6px);opacity:.2;filter:hue-rotate(-30deg)}
+  75%{transform:translate(-4px,-2px);opacity:.35;filter:hue-rotate(80deg)}
+}
+.p2-split{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+}
+.p2-split .row{
+  flex:1;
+  background:linear-gradient(90deg,rgba(23,225,225,.3),rgba(244,180,70,.3));
+  border:1px solid rgba(255,255,255,.2);
+  animation:p2Split 1.5s ease-in-out infinite alternate;
+}
+.p2-split .row:nth-child(2){animation-delay:.2s;background:linear-gradient(90deg,rgba(255,94,126,.3),rgba(23,225,225,.3))}
+.p2-split .row:nth-child(3){animation-delay:.4s}
+.p2-split .row:nth-child(4){animation-delay:.6s;background:linear-gradient(90deg,rgba(244,180,70,.3),rgba(255,94,126,.3))}
+@keyframes p2Split{
+  0%{transform:scaleX(.8);opacity:.4}
+  100%{transform:scaleX(1);opacity:.9}
+}
+.p2-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  text-align:center;z-index:5;
+}
+.p2-text .big{
+  font-size:clamp(32px,9vw,96px);font-weight:900;color:#fff;
+  letter-spacing:8px;text-transform:uppercase;
+  text-shadow:0 0 30px #17e1e1,0 0 80px #17e1e1;
+  animation:p2TextPop 1s cubic-bezier(.2,.9,.3,1) both;
+}
+@keyframes p2TextPop{
+  0%{opacity:0;transform:scale(2);filter:blur(20px)}
+  100%{opacity:1;transform:scale(1);filter:blur(0)}
+}
+.p2-text .small{
+  font-size:clamp(14px,2.6vw,24px);font-weight:600;
+  letter-spacing:12px;color:#f4b446;margin-top:16px;
+  animation:p2TextPop 1s .2s cubic-bezier(.2,.9,.3,1) both;
+}
+.p2-ring{
+  position:absolute;top:50%;left:50%;
+  width:60vmin;height:60vmin;border-radius:50%;
+  border:3px solid #17e1e1;transform:translate(-50%,-50%);
+  animation:p2RingExpand 2s ease-out infinite;
+  box-shadow:0 0 40px rgba(23,225,225,.6);
+}
+@keyframes p2RingExpand{
+  0%{opacity:1;transform:translate(-50%,-50%) scale(.2)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(2)}
+}
+
+/* ============================================================
+   P3 — GALLERY COLLAGE (ảnh hoa phủ kín màn hình)
+   ============================================================ */
+#p3{
+  z-index:70;
+  background:
+    radial-gradient(circle at 50% 50%,#1a0a2e 0%,#000 70%);
+  animation:p3In .5s 9.5s cubic-bezier(.42,0,.58,1) forwards,
+            p3Out .5s 11.5s cubic-bezier(.42,0,.58,1) forwards;
+  overflow:hidden;
+}
+@keyframes p3In{from{opacity:0;visibility:visible}to{opacity:1;visibility:visible}}
+@keyframes p3Out{to{opacity:0;visibility:hidden}}
+
+/* Lớp nền tối phía sau để ảnh nổi bật */
+#p3::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(10,0,20,.6) 0%,rgba(0,0,0,.95) 100%);
+  z-index:0;
+}
+
+/* Container chứa tất cả ảnh collage — được sinh tự động bởi JS */
+#galleryCollage{
+  position:absolute;inset:0;
+  z-index:1;
+  overflow:hidden;
+}
+
+/* Mỗi ảnh hoa */
+.flower-item{
+  position:absolute;
+  border-radius:20px;
+  overflow:hidden;
+  opacity:0;
+  transform:scale(.2) rotate(var(--rot, 0deg));
+  box-shadow:
+    0 0 40px rgba(255,120,180,.4),
+    0 0 80px rgba(244,180,70,.2),
+    inset 0 0 20px rgba(0,0,0,.3);
+  border:2px solid rgba(255,255,255,.25);
+  will-change:transform, opacity, filter;
+  /* animation được JS set động */
+}
+.flower-item img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  filter:saturate(1.2) brightness(1.05);
+}
+.flower-item::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 40%),
+    radial-gradient(circle at 70% 80%,rgba(23,225,225,.2),transparent 60%);
+  pointer-events:none;
+}
+
+/* Animation xuất hiện từng ảnh */
+@keyframes flowerBloom{
+  0%{
+    opacity:0;
+    transform:scale(.15) rotate(var(--rot, 0deg));
+    filter:blur(20px) brightness(2);
+  }
+  50%{
+    opacity:.9;
+    filter:blur(2px) brightness(1.3);
+  }
+  100%{
+    opacity:1;
+    transform:scale(1) rotate(var(--rot, 0deg));
+    filter:blur(0) brightness(1);
+  }
+}
+
+/* Animation nhẹ nhàng bay bổng sau khi xuất hiện */
+@keyframes flowerFloat{
+  0%,100%{
+    transform:scale(1) rotate(var(--rot, 0deg)) translate(0, 0);
+  }
+  50%{
+    transform:scale(1.02) rotate(calc(var(--rot, 0deg) + 2deg)) translate(4px, -6px);
+  }
+}
+
+/* Animation khi P3 kết thúc — ảnh mờ dần */
+@keyframes flowerFade{
+  to{
+    opacity:0;
+    filter:blur(10px) brightness(0.5);
+    transform:scale(.85) rotate(var(--rot, 0deg));
+  }
+}
+
+/* Overlay text trên cùng collage */
+#galleryText{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  z-index:10;
+  text-align:center;
+  pointer-events:none;
+  opacity:0;
+  animation:galleryTextIn 1s 10.2s cubic-bezier(.2,.9,.3,1) forwards;
+}
+@keyframes galleryTextIn{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.5);filter:blur(20px)}
+  100%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:blur(0)}
+}
+#galleryText .g-big{
+  font-size:clamp(36px,10vw,110px);
+  font-weight:900;
+  color:#fff;
+  letter-spacing:10px;
+  text-transform:uppercase;
+  text-shadow:
+    0 0 20px #ff5e7e,
+    0 0 40px #ff5e7e,
+    0 0 80px rgba(255,94,126,.6),
+    0 4px 12px rgba(0,0,0,.9);
+  line-height:1.1;
+}
+#galleryText .g-small{
+  display:block;
+  margin-top:20px;
+  font-size:clamp(14px,2.6vw,26px);
+  font-weight:600;
+  color:#f4b446;
+  letter-spacing:14px;
+  text-transform:uppercase;
+  text-shadow:0 0 20px rgba(244,180,70,.9),0 2px 8px rgba(0,0,0,.9);
+}
+
+/* ============================================================
+   P4 — FINALE
+   ============================================================ */
+#p4{
+  z-index:60;
+  background:url('images/finale-bg.jpg') center/cover no-repeat,
+             radial-gradient(circle at 50% 50%,#0a1a1a 0%,#000 80%);
+  animation:p4In .8s 11.5s cubic-bezier(.42,0,.58,1) forwards;
+}
+@keyframes p4In{from{opacity:0;visibility:visible;transform:rotateY(25deg) scale(.7)}to{opacity:1;visibility:visible;transform:rotateY(0) scale(1)}}
+#p4::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,transparent 40%,rgba(0,0,0,.8) 100%);
+}
+#p4 .profileCard{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:min(85vw,780px);
+  background:linear-gradient(145deg,rgba(20,20,35,.92),rgba(10,10,20,.96));
+  border-radius:32px;padding:3vmin 3.5vmin;
+  box-shadow:
+    0 0 0 2px rgba(23,225,225,.35),
+    0 0 40px rgba(23,225,225,.2),
+    0 0 80px rgba(244,180,70,.1),
+    inset 0 0 60px rgba(0,0,0,.6);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.08);
+  animation:cardAppear 1s 11.7s cubic-bezier(.2,.9,.3,1) both;
+  overflow:hidden;
+}
+@keyframes cardAppear{
+  0%{opacity:0;transform:translate(-50%,-50%) rotateY(15deg) scale(.8)}
+  100%{opacity:1;transform:translate(-50%,-50%) rotateY(0) scale(1)}
+}
+#p4 .profileCard::before{
+  content:'';position:absolute;inset:-2px;border-radius:34px;padding:2px;
+  background:linear-gradient(135deg,#17e1e1,#f4b446,#ff5e7e,#17e1e1);
+  background-size:300% 300%;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:borderSpin 5s linear infinite;pointer-events:none;
+}
+@keyframes borderSpin{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+#p4 .pcHeader{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:2vmin;position:relative;z-index:2;flex-wrap:wrap;gap:1vmin;
+}
+#p4 .badge{
+  background:rgba(23,225,225,.12);border:1px solid rgba(23,225,225,.5);
+  border-radius:100px;padding:.6vmin 2vmin;font-size:clamp(9px,1.2vmin,13px);
+  font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#17e1e1;
+  box-shadow:0 0 20px rgba(23,225,225,.25);
+  animation:glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse{
+  0%,100%{box-shadow:0 0 15px rgba(23,225,225,.2)}
+  50%{box-shadow:0 0 30px rgba(23,225,225,.5)}
+}
+#p4 .dateBadge{
+  background:rgba(244,180,70,.1);border:1px solid rgba(244,180,70,.5);
+  border-radius:100px;padding:.6vmin 2vmin;font-size:clamp(10px,1.3vmin,14px);
+  font-weight:700;color:#f4b446;letter-spacing:1px;
+  box-shadow:0 0 20px rgba(244,180,70,.2);
+}
+#p4 .pcBody{
+  display:flex;gap:3vmin;align-items:center;position:relative;z-index:2;
+}
+#p4 .avatarFrame{
+  width:18vmin;height:18vmin;min-width:100px;min-height:100px;border-radius:28px;
+  background:linear-gradient(135deg,#17e1e1,#0a6b6b);padding:4px;
+  box-shadow:0 0 40px rgba(23,225,225,.35),0 0 80px rgba(244,180,70,.15);
+  animation:floatAvatar 4s ease-in-out infinite;flex-shrink:0;
+}
+@keyframes floatAvatar{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
+#p4 .avatarInner{
+  width:100%;height:100%;border-radius:24px;
+  background:url('images/avatar-final.jpg') center/cover no-repeat,
+             linear-gradient(145deg,#1a1a2e,#0f0f1a);
+  border:2px solid rgba(255,255,255,.06);
+  position:relative;overflow:hidden;
+}
+#p4 .avatarInner::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 30% 25%,rgba(23,225,225,.25) 0%,transparent 60%),
+    radial-gradient(circle at 70% 75%,rgba(244,180,70,.2) 0%,transparent 55%);
+}
+#p4 .infoSection{flex:1;min-width:0}
+#p4 .nameTitle{
+  font-size:clamp(20px,3.2vmin,36px);font-weight:800;color:#fff;
+  letter-spacing:1px;line-height:1.2;margin-bottom:.5vmin;
+  text-shadow:0 0 20px rgba(23,225,225,.5),0 0 40px rgba(23,225,225,.2);
+}
+#p4 .nameTitle .highlight{
+  color:#17e1e1;position:relative;display:inline-block;
+}
+#p4 .nameTitle .highlight::after{
+  content:'';position:absolute;bottom:-2px;left:0;width:100%;height:3px;
+  background:linear-gradient(90deg,#17e1e1,#f4b446);border-radius:10px;
+  box-shadow:0 0 12px rgba(23,225,225,.7);
+}
+#p4 .subtitle{
+  font-size:clamp(10px,1.3vmin,14px);color:rgba(255,255,255,.65);
+  font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:1.5vmin;display:flex;align-items:center;gap:1vmin;
+}
+#p4 .subtitle .dot{
+  width:6px;height:6px;background:#f4b446;border-radius:50%;
+  box-shadow:0 0 12px #f4b446;animation:dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.5;transform:scale(.8)}
+}
+#p4 .statBar{margin-bottom:1vmin}
+#p4 .statLabel{
+  display:flex;justify-content:space-between;font-size:clamp(9px,1.1vmin,12px);
+  font-weight:600;color:rgba(255,255,255,.7);letter-spacing:1px;margin-bottom:.5vmin;
+}
+#p4 .statLabel .value{color:#17e1e1;font-weight:700}
+#p4 .barTrack{
+  width:100%;height:8px;background:rgba(255,255,255,.08);
+  border-radius:100px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.5);
+}
+#p4 .barFill{
+  height:100%;border-radius:100px;
+  background:linear-gradient(90deg,#17e1e1,#f4b446);
+  box-shadow:0 0 20px rgba(23,225,225,.6);position:relative;
+  animation:barGrow 2s cubic-bezier(.2,.9,.3,1) both;
+}
+#p4 .barFill::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+  animation:barShine 2.5s ease-in-out infinite;
+}
+@keyframes barGrow{0%{width:0!important}}
+@keyframes barShine{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(200%)}
+}
+#p4 .pcFooter{
+  margin-top:2vmin;padding-top:1.5vmin;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex;justify-content:space-between;align-items:center;
+  position:relative;z-index:2;flex-wrap:wrap;gap:1vmin;
+}
+#p4 .quote{
+  font-size:clamp(10px,1.3vmin,14px);color:rgba(255,255,255,.55);
+  font-style:italic;letter-spacing:.5px;display:flex;align-items:center;gap:.5vmin;
+}
+#p4 .quote .mark{color:#f4b446;font-size:2vmin;line-height:1;font-style:normal;opacity:.8}
+#p4 .tags{display:flex;gap:.8vmin}
+#p4 .tag{
+  background:rgba(23,225,225,.08);border:1px solid rgba(23,225,225,.3);
+  border-radius:100px;padding:.4vmin 1.4vmin;font-size:clamp(8px,1vmin,11px);
+  font-weight:700;color:#17e1e1;letter-spacing:1px;text-transform:uppercase;
+}
+#p4 .tag.gold{
+  background:rgba(244,180,70,.08);border-color:rgba(244,180,70,.35);color:#f4b446;
+}
+#p4 .credit{
+  position:absolute;bottom:3vmin;left:50%;transform:translateX(-50%);
+  font-size:clamp(9px,1.1vmin,12px);color:rgba(255,255,255,.4);
+  letter-spacing:3px;text-transform:uppercase;text-align:center;
+  animation:creditFade 1s 13s ease-in both;
+}
+@keyframes creditFade{from{opacity:0}to{opacity:1}}
+
+/* ============================================================
+   OVERLAY TOÀN CỤC
+   ============================================================ */
+.flash{
+  position:absolute;inset:0;background:#17e1e1;opacity:0;
+  pointer-events:none;z-index:999;
+  animation:flashFrame 14s cubic-bezier(.42,0,.58,1) infinite;
+}
+@keyframes flashFrame{
+  0%,100%{opacity:0}
+  22%{opacity:.7}
+  22.5%{opacity:0}
+  49.5%{opacity:0}
+  50%{opacity:.6}
+  50.5%{opacity:0}
+  69%{opacity:0}
+  69.5%{opacity:.8}
+  70%{opacity:0}
+  83%{opacity:0}
+  83.5%{opacity:.5}
+  84%{opacity:0}
+}
+.global-vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,transparent 30%,rgba(0,0,0,.85) 100%);
+  pointer-events:none;z-index:900;
+}
+.noise{
+  position:absolute;inset:0;opacity:.04;pointer-events:none;z-index:901;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:noiseShift .15s steps(2) infinite;
+}
+@keyframes noiseShift{
+  0%{transform:translate(0,0)}
+  50%{transform:translate(-2px,1px)}
+  100%{transform:translate(1px,-2px)}
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:720px){
+  #p1 .gameProfile{width:50vmin;height:28vmin;top:3%;left:3%}
+  #p1 .skinBig{width:44vmin;height:38vmin;top:6%;right:4%}
+  #p1 .titleBanner{width:55vmin;bottom:20%;right:3%}
+  #p1 .playerName{top:55%;font-size:clamp(16px,5vmin,28px)}
+  #p1 .champName{bottom:24%}
+  #p4 .pcBody{flex-direction:column;text-align:center;gap:2vmin}
+  #p4 .subtitle{justify-content:center}
+  #p4 .pcFooter{flex-direction:column;align-items:center;text-align:center}
+  #p4 .quote{justify-content:center}
+  #unlockOverlay .unlock-box{padding:30px 24px}
+  #unlockOverlay .unlock-icon{font-size:48px}
+  #unlockOverlay .unlock-title{font-size:18px}
+  #galleryText .g-big{letter-spacing:6px}
+  #galleryText .g-small{letter-spacing:8px}
+}
+@media (max-width:420px){
+  #p1 .gameProfile{width:58vmin;height:32vmin}
+  #p1 .skinBig{width:50vmin;height:42vmin}
+  #p1 .titleBanner{width:65vmin}
+  #p4 .profileCard{padding:2vmin}
+}
+</style>
+</head>
+<body>
+
+<!-- Overlay unlock nhạc -->
+<div id="unlockOverlay">
+  <div class="unlock-box">
+    <span class="unlock-icon">🎵</span>
+    <div class="unlock-title">Chạm để bắt đầu</div>
+    <div class="unlock-sub">For You</div>
+  </div>
+</div>
+
+<div id="stage">
+
+  <!-- P0 — INTRO -->
+  <div id="p0" class="layer">
+    <div class="p0-glow"></div>
+    <div class="p0-lightning"></div>
+    <div class="p0-title">
+      <span class="t1">Chúc Mừng</span>
+      <span class="t2">20 · 11</span>
+    </div>
+  </div>
+
+  <!-- P1 — TƯỚNG 1,2 -->
+  <div id="p1" class="layer">
+    <div class="bg"></div>
+    <div class="cloud"></div>
+    <div class="gameProfile">
+      <div class="gp-title">Profile</div>
+      <div class="gp-row">
+        <div class="gp-avatar"></div>
+        <div>
+          <div class="gp-name">Nguyễn Kim Yến</div>
+          <div class="gp-sub">13/06/2006 · 20/11</div>
+        </div>
+      </div>
+    </div>
+    <div class="expBar">
+      <div class="label"><span>EXP CHÚC MỪNG</span><span id="expNum">0 / 100</span></div>
+      <div class="track"><div class="fill"></div></div>
+    </div>
+    <div class="skinBig"><div class="inner"></div></div>
+    <div class="playerName">Người Lái Đò</div>
+    <div class="champName">★ Cô Giáo ★</div>
+    <div class="statsPanel">
+      <div class="stat-item"><span class="icon">🌸</span><span class="label">Flower</span><span class="num"></span></div>
+      <div class="stat-item"><span class="icon">❤️</span><span class="label">Like</span><span class="num"></span></div>
+    </div>
+    <div class="titleBanner">
+      <div class="bg"><div class="text">Content Creator</div></div>
+      <div class="sub" id="counterText">0 / 100</div>
+    </div>
+    <div class="pulse-ring" style="top:20%;left:15%"></div>
+    <div class="pulse-ring" style="top:60%;right:20%;animation-delay:1.3s"></div>
+    <div class="pulse-ring" style="bottom:25%;left:40%;animation-delay:2.6s"></div>
+    <div class="scanline"></div>
+  </div>
+
+  <!-- P2 — TRANSITION -->
+  <div id="p2" class="layer">
+    <div class="p2-glitch"></div>
+    <div class="p2-split">
+      <div class="row"></div><div class="row"></div>
+      <div class="row"></div><div class="row"></div>
+    </div>
+    <div class="p2-ring"></div>
+    <div class="p2-ring" style="animation-delay:1s"></div>
+    <div class="p2-text">
+      <div class="big">Chúc Mừng</div>
+      <div class="small">EM</div>
+    </div>
+  </div>
+
+  <!-- P3 — GALLERY COLLAGE (ảnh hoa tự sinh bởi JS) -->
+  <div id="p3" class="layer">
+    <div id="galleryCollage"></div>
+    <div id="galleryText">
+      <div class="g-big">Vì Em Là</div>
+      <div class="g-small">Bông Hoa Xinh Đẹp Nhất</div>
+    </div>
+  </div>
+
+  <!-- P4 — FINALE -->
+  <div id="p4" class="layer">
+    <div class="profileCard">
+      <div class="pcHeader">
+        <span class="badge">★ Profile Creator</span>
+        <span class="dateBadge">20 · 11 · 2026</span>
+      </div>
+      <div class="pcBody">
+        <div class="avatarFrame"><div class="avatarInner"></div></div>
+        <div class="infoSection">
+          <h1 class="nameTitle"><span class="highlight">Người Lái Đò</span> Thầm Lặng</h1>
+          <p class="subtitle"><span class="dot"></span> Chúc Mừng Ngày Nhà Giáo Việt Nam</p>
+          <div class="statBar">
+            <div class="statLabel"><span>Tâm huyết</span><span class="value">100%</span></div>
+            <div class="barTrack"><div class="barFill" style="width:100%"></div></div>
+          </div>
+          <div class="statBar">
+            <div class="statLabel"><span>Yêu thương</span><span class="value">99.9%</span></div>
+            <div class="barTrack"><div class="barFill" style="width:99.9%;animation-delay:.2s"></div></div>
+          </div>
+          <div class="statBar">
+            <div class="statLabel"><span>Kiên nhẫn</span><span class="value">∞</span></div>
+            <div class="barTrack"><div class="barFill" style="width:100%;animation-delay:.4s"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="pcFooter">
+        <div class="quote"><span class="mark">“</span> Một đời người, một rừng cây — Nghĩa thầy cô mãi không phai.</div>
+        <div class="tags">
+          <span class="tag">#20/11</span>
+          <span class="tag gold">#Chúc Mừng</span>
+        </div>
+      </div>
+    </div>
+    <div class="credit">Made by ♥ · PH </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="flash"></div>
+  <div class="global-vignette"></div>
+  <div class="noise"></div>
+</div>
+
+<!-- Nhạc nền -->
+<audio id="bgMusic" loop preload="auto" muted playsinline>
+  <source src="audio/music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Điều khiển -->
+<button id="musicToggle" title="Bật/Tắt nhạc">🔇</button>
+<button id="replayBtn">↻ XEM LẠI</button>
+
+<script>
+/* ============================================================
+   GLOBAL SPEED CONTROL
+   ============================================================ */
+const SPEED = 2;
+
+/* ============================================================
+   CONFIG — danh sách ảnh hoa cho collage P3
+   ============================================================
+   Thêm bao nhiêu ảnh cũng được — code tự động chia layout.
+   Khuyến nghị: 12-20 ảnh để phủ kín màn hình đẹp.
+   Nếu ảnh ít hơn 12, code sẽ tự lặp lại cho đủ.
+   ============================================================ */
+const CONFIG = {
+  music: 'audio/music.mp3',
+  totalDuration: 14000 * SPEED,
+  counters: [
+    { t: 4500 * SPEED, from: 0, to: 90,  duration: 1800 * SPEED, el: 'expNum',      suffix: ' / 100' },
+    { t: 3800 * SPEED, from: 0, to: 100, duration: 2500 * SPEED, el: 'counterText', suffix: ' / 100' },
+  ],
+  p3Trigger: 9600 * SPEED,
+  p3EndTime: 11500 * SPEED,
+  defaultVolume: 0.6,
+
+  /* ====== DANH SÁCH ẢNH HOA CHO P3 ======
+     Thay bằng tên file ảnh hoa của bạn trong thư mục images/
+     Càng nhiều ảnh càng phủ kín màn hình đẹp.
+     Định dạng: images/ten-file.jpg
+  */
+  flowers: [
+    'images/hoa1.jpg',
+    'images/hoa2.jpg',
+    'images/hoa3.jpg',
+    'images/hoa4.jpg',
+    'images/hoa5.jpg',
+    'images/hoa6.jpg',
+    'images/hoa7.jpg',
+    'images/hoa8.jpg',
+    'images/hoa9.jpg',
+    'images/hoa10.jpg',
+    'images/hoa11.jpg',
+    'images/hoa12.jpg',
+    'images/hoa13.jpg',
+    'images/hoa14.jpg',
+    'images/hoa15.jpg',
+    'images/hoa16.jpg',
+    'images/hoa17.jpg',
+    'images/hoa18.jpg',
+    'images/hoa19.jpg',
+    'images/hoa20.jpg',
+  ],
+
+  /* Số ảnh tối thiểu cần để phủ kín màn hình.
+     Nếu flowers.length < giá trị này, code sẽ tự lặp ảnh. */
+  minFlowers: 16,
+
+  /* Thời điểm ảnh đầu tiên xuất hiện (ms, chưa nhân SPEED) */
+  flowerStartTime: 9600,
+  /* Khoảng cách giữa các ảnh (ms, chưa nhân SPEED) */
+  flowerInterval: 150,
+};
+
+/* ============================================================
+   AUTO-OVERRIDE CSS ANIMATION THEO SPEED
+   ============================================================ */
+function applySpeedToCSS() {
+  document.querySelectorAll('*').forEach(el => {
+    const cs = getComputedStyle(el);
+    const dur = cs.animationDuration;
+    const del = cs.animationDelay;
+
+    if (dur && dur !== '0s') {
+      const durs = dur.split(',').map(d => {
+        const n = parseFloat(d);
+        return isNaN(n) ? d : (n * SPEED) + 's';
+      });
+      el.style.animationDuration = durs.join(',');
+    }
+    if (del && del !== '0s') {
+      const dels = del.split(',').map(d => {
+        const n = parseFloat(d);
+        return isNaN(n) ? d : (n * SPEED) + 's';
+      });
+      el.style.animationDelay = dels.join(',');
+    }
+  });
+}
+
+/* ============================================================
+   P3 COLLAGE — sinh ảnh hoa phủ kín màn hình
+   ============================================================ */
+function buildFlowerCollage() {
+  const container = document.getElementById('galleryCollage');
+  if (!container) return;
+
+  // Lấy danh sách ảnh, lặp nếu thiếu
+  let list = [...CONFIG.flowers];
+  while (list.length < CONFIG.minFlowers) {
+    list = list.concat(CONFIG.flowers);
+  }
+
+  // Xác định kích thước ảnh dựa vào số lượng
+  // Càng nhiều ảnh → ảnh càng nhỏ để phủ kín
+  const count = list.length;
+  let baseSize;
+  if (count <= 12)      baseSize = 38;  // vmin
+  else if (count <= 16) baseSize = 32;
+  else if (count <= 20) baseSize = 28;
+  else if (count <= 28) baseSize = 24;
+  else                  baseSize = 20;
+
+  // Tạo lưới vị trí phủ kín màn hình — dùng grid ngẫu nhiên có chồng lấp
+  // Chia màn hình thành lưới 6x4 ô, mỗi ảnh đặt vào 1 ô + lệch ngẫu nhiên
+  const cols = Math.ceil(Math.sqrt(count * (window.innerWidth / window.innerHeight)));
+  const rows = Math.ceil(count / cols);
+  const cellW = 100 / cols;
+  const cellH = 100 / rows;
+
+  // Xáo trộn thứ tự ảnh để không bị lặp pattern
+  const shuffled = [...list].sort(() => Math.random() - 0.5);
+
+  shuffled.forEach((src, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+
+    // Vị trí cơ bản + lệch ngẫu nhiên (±20% ô)
+    const jitterX = (Math.random() - 0.5) * cellW * 0.6;
+    const jitterY = (Math.random() - 0.5) * cellH * 0.6;
+    const x = (col * cellW) + (cellW / 2) + jitterX;
+    const y = (row * cellH) + (cellH / 2) + jitterY;
+
+    // Kích thước ngẫu nhiên (dao động ±15%)
+    const sizeMul = 0.85 + Math.random() * 0.3;
+    const w = baseSize * sizeMul;
+    const h = baseSize * sizeMul;
+
+    // Góc xoay ngẫu nhiên nhẹ
+    const rot = (Math.random() - 0.5) * 30;
+
+    // Delay xuất hiện — so le để có hiệu ứng "nở rộ"
+    const delay = CONFIG.flowerStartTime + (i * CONFIG.flowerInterval);
+    const delaySec = (delay / 1000) * SPEED;
+    const durSec = 1.2 * SPEED;
+
+    // Tạo phần tử
+    const item = document.createElement('div');
+    item.className = 'flower-item';
+    item.style.left = `calc(${x}% - ${w/2}vmin)`;
+    item.style.top = `calc(${y}% - ${h/2}vmin)`;
+    item.style.width = `${w}vmin`;
+    item.style.height = `${h}vmin`;
+    item.style.setProperty('--rot', `${rot}deg`);
+    item.style.zIndex = 100 + i; // ảnh sau đè ảnh trước
+
+    // Thẻ img bên trong
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = `Hoa ${i + 1}`;
+    img.loading = 'lazy';
+    img.onerror = () => {
+      // Fallback: nếu ảnh lỗi, hiện gradient hoa
+      item.style.background = `linear-gradient(135deg,
+        hsl(${Math.random()*360},70%,65%),
+        hsl(${Math.random()*360},70%,45%))`;
+      img.remove();
+    };
+    item.appendChild(img);
+
+    container.appendChild(item);
+
+    // Animation xuất hiện: bloom
+    item.style.animation = `flowerBloom ${durSec}s ${delaySec}s cubic-bezier(.2,.9,.3,1) forwards`;
+
+    // Sau khi bloom xong, chuyển sang float nhẹ
+    setTimeout(() => {
+      item.style.animation = `flowerFloat ${4 + Math.random()*2}s ease-in-out infinite alternate`;
+    }, (delaySec + durSec) * 1000);
+
+    // Trước khi P3 kết thúc 0.5s, fade out
+    const fadeAt = CONFIG.p3EndTime * SPEED - 500;
+    if (fadeAt > 0) {
+      setTimeout(() => {
+        item.style.animation = `flowerFade ${0.5 * SPEED}s ease-in forwards`;
+      }, fadeAt);
+    }
+  });
+}
+
+/* ============================================================
+   NHẠC
+   ============================================================ */
+const music = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicToggle');
+const replayBtn = document.getElementById('replayBtn');
+const unlockOverlay = document.getElementById('unlockOverlay');
+
+music.src = CONFIG.music;
+music.volume = 0;
+music.muted = true;
+
+let isUnlocked = false;
+let fadeInterval = null;
+
+function fadeIn(targetVolume = CONFIG.defaultVolume, duration = 2000) {
+  if (fadeInterval) clearInterval(fadeInterval);
+  const start = music.volume;
+  const startTime = performance.now();
+  fadeInterval = setInterval(() => {
+    const p = Math.min((performance.now() - startTime) / duration, 1);
+    music.volume = start + (targetVolume - start) * p;
+    if (p >= 1) clearInterval(fadeInterval);
+  }, 50);
+}
+
+function setPlayingUI(playing) {
+  if (playing) {
+    musicBtn.textContent = '🔊';
+    musicBtn.classList.add('playing');
+  } else {
+    musicBtn.textContent = '🔇';
+    musicBtn.classList.remove('playing');
+  }
+}
+
+async function tryAutoplayMuted() {
+  try {
+    music.muted = true;
+    await music.play();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function unlockAudio() {
+  if (isUnlocked) return;
+  isUnlocked = true;
+  music.muted = false;
+  music.volume = 0;
+  if (music.paused) {
+    music.play().then(() => {
+      fadeIn();
+      setPlayingUI(true);
+      hideUnlockOverlay();
+    }).catch(() => showUnlockOverlay());
+  } else {
+    fadeIn();
+    setPlayingUI(true);
+    hideUnlockOverlay();
+  }
+  removeUnlockListeners();
+}
+
+function showUnlockOverlay() {
+  unlockOverlay.classList.add('show');
+  unlockOverlay.classList.remove('hide');
+}
+function hideUnlockOverlay() {
+  unlockOverlay.classList.add('hide');
+  setTimeout(() => unlockOverlay.classList.remove('show'), 500);
+}
+
+const gestureEvents = ['click', 'touchstart', 'keydown', 'mousedown', 'pointerdown'];
+function addUnlockListeners() {
+  gestureEvents.forEach(evt => document.addEventListener(evt, unlockAudio, { passive: true }));
+}
+function removeUnlockListeners() {
+  gestureEvents.forEach(evt => document.removeEventListener(evt, unlockAudio));
+}
+
+unlockOverlay.addEventListener('click', unlockAudio);
+unlockOverlay.addEventListener('touchstart', unlockAudio);
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && music.paused && isUnlocked) {
+    music.play().then(() => { fadeIn(); setPlayingUI(true); }).catch(() => {});
+  }
+});
+
+music.addEventListener('play',  () => setPlayingUI(true));
+music.addEventListener('pause', () => setPlayingUI(false));
+
+musicBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (music.paused) {
+    music.muted = false;
+    music.play().then(() => {
+      if (music.volume === 0) fadeIn();
+      setPlayingUI(true);
+      hideUnlockOverlay();
+      isUnlocked = true;
+      removeUnlockListeners();
+    }).catch(() => {});
+  } else {
+    music.pause();
+    setPlayingUI(false);
+  }
+});
+
+async function initAutoplay() {
+  const ok = await tryAutoplayMuted();
+  addUnlockListeners();
+  if (!ok) {
+    setTimeout(() => { if (music.paused) showUnlockOverlay(); }, 1500 * SPEED);
+  } else {
+    setTimeout(() => { if (music.muted && !isUnlocked) showUnlockOverlay(); }, 2000 * SPEED);
+  }
+}
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+function animateCounter(from, to, duration, elId, suffix) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (to - from) * eased) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+CONFIG.counters.forEach(c => {
+  setTimeout(() => animateCounter(c.from, c.to, c.duration, c.el, c.suffix), c.t);
+});
+
+setTimeout(() => replayBtn.classList.add('show'), CONFIG.totalDuration);
+
+replayBtn.addEventListener('click', () => location.reload());
+
+/* ============================================================
+   PULSE RINGS
+   ============================================================ */
+setInterval(() => {
+  const p1 = document.getElementById('p1');
+  if (!p1) return;
+  const op = parseFloat(getComputedStyle(p1).opacity);
+  if (op < .1) return;
+  const ring = document.createElement('div');
+  ring.className = 'pulse-ring';
+  ring.style.top = (Math.random() * 80 + 10) + '%';
+  ring.style.left = (Math.random() * 80 + 10) + '%';
+  p1.appendChild(ring);
+  setTimeout(() => ring.remove(), 8000 * SPEED);
+}, 400 * SPEED);
+
+/* ============================================================
+   KHỞI ĐỘNG
+   ============================================================ */
+window.addEventListener('DOMContentLoaded', () => {
+  // Áp dụng SPEED cho CSS animation
+  applySpeedToCSS();
+
+  // Sinh collage ảnh hoa cho P3
+  buildFlowerCollage();
+
+  // Khởi động autoplay nhạc
+  initAutoplay();
+
+  // Kiểm tra file nhạc
+  fetch(CONFIG.music, { method: 'HEAD' })
+    .then(r => { if (!r.ok) console.warn('[20/11] ⚠️ Không tìm thấy nhạc:', CONFIG.music); })
+    .catch(() => console.warn('[20/11] ⚠️ Không tải được nhạc:', CONFIG.music));
+
+  console.log('[20/11] SPEED =', SPEED, '| Tổng thời gian =', (CONFIG.totalDuration/1000).toFixed(1) + 's');
+  console.log('[20/11] Số ảnh hoa:', CONFIG.flowers.length);
+});
+</script>
+</body>
+</html>
