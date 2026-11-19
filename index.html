@@ -984,14 +984,10 @@ body{
 /* ============================================================
    GLOBAL SPEED CONTROL
    ============================================================ */
-const SPEED = 2;
+const SPEED = 1.5;
 
 /* ============================================================
-   CONFIG — danh sách ảnh hoa cho collage P3
-   ============================================================
-   Thêm bao nhiêu ảnh cũng được — code tự động chia layout.
-   Khuyến nghị: 12-20 ảnh để phủ kín màn hình đẹp.
-   Nếu ảnh ít hơn 12, code sẽ tự lặp lại cho đủ.
+   CONFIG
    ============================================================ */
 const CONFIG = {
   music: 'audio/music.mp3',
@@ -1003,43 +999,16 @@ const CONFIG = {
   p3Trigger: 9600 * SPEED,
   p3EndTime: 11500 * SPEED,
   defaultVolume: 0.6,
-
-  /* ====== DANH SÁCH ẢNH HOA CHO P3 ======
-     Thay bằng tên file ảnh hoa của bạn trong thư mục images/
-     Càng nhiều ảnh càng phủ kín màn hình đẹp.
-     Định dạng: images/ten-file.jpg
-  */
   flowers: [
-    'images/hoa1.jpg',
-    'images/hoa2.jpg',
-    'images/hoa3.jpg',
-    'images/hoa4.jpg',
-    'images/hoa5.jpg',
-    'images/hoa6.jpg',
-    'images/hoa7.jpg',
-    'images/hoa8.jpg',
-    'images/hoa9.jpg',
-    'images/hoa10.jpg',
-    'images/hoa11.jpg',
-    'images/hoa12.jpg',
-    'images/hoa13.jpg',
-    'images/hoa14.jpg',
-    'images/hoa15.jpg',
-    'images/hoa16.jpg',
-    'images/hoa17.jpg',
-    'images/hoa18.jpg',
-    'images/hoa19.jpg',
-    'images/hoa20.jpg',
+    'images/hoa1.jpg','images/hoa2.jpg','images/hoa3.jpg','images/hoa4.jpg',
+    'images/hoa5.jpg','images/hoa6.jpg','images/hoa7.jpg','images/hoa8.jpg',
+    'images/hoa9.jpg','images/hoa10.jpg','images/hoa11.jpg','images/hoa12.jpg',
+    'images/hoa13.jpg','images/hoa14.jpg','images/hoa15.jpg','images/hoa16.jpg',
+    'images/hoa17.jpg','images/hoa18.jpg','images/hoa19.jpg','images/hoa20.jpg',
   ],
-
-  /* Số ảnh tối thiểu cần để phủ kín màn hình.
-     Nếu flowers.length < giá trị này, code sẽ tự lặp ảnh. */
   minFlowers: 16,
-
-  /* Thời điểm ảnh đầu tiên xuất hiện (ms, chưa nhân SPEED) */
   flowerStartTime: 9600,
-  /* Khoảng cách giữa các ảnh (ms, chưa nhân SPEED) */
-  flowerInterval: 150,
+  flowerInterval: 180,
 };
 
 /* ============================================================
@@ -1050,7 +1019,6 @@ function applySpeedToCSS() {
     const cs = getComputedStyle(el);
     const dur = cs.animationDuration;
     const del = cs.animationDelay;
-
     if (dur && dur !== '0s') {
       const durs = dur.split(',').map(d => {
         const n = parseFloat(d);
@@ -1069,62 +1037,48 @@ function applySpeedToCSS() {
 }
 
 /* ============================================================
-   P3 COLLAGE — sinh ảnh hoa phủ kín màn hình
+   P3 COLLAGE
    ============================================================ */
 function buildFlowerCollage() {
   const container = document.getElementById('galleryCollage');
   if (!container) return;
 
-  // Lấy danh sách ảnh, lặp nếu thiếu
   let list = [...CONFIG.flowers];
   while (list.length < CONFIG.minFlowers) {
     list = list.concat(CONFIG.flowers);
   }
 
-  // Xác định kích thước ảnh dựa vào số lượng
-  // Càng nhiều ảnh → ảnh càng nhỏ để phủ kín
   const count = list.length;
   let baseSize;
-  if (count <= 12)      baseSize = 38;  // vmin
+  if (count <= 12)      baseSize = 38;
   else if (count <= 16) baseSize = 32;
   else if (count <= 20) baseSize = 28;
   else if (count <= 28) baseSize = 24;
   else                  baseSize = 20;
 
-  // Tạo lưới vị trí phủ kín màn hình — dùng grid ngẫu nhiên có chồng lấp
-  // Chia màn hình thành lưới 6x4 ô, mỗi ảnh đặt vào 1 ô + lệch ngẫu nhiên
   const cols = Math.ceil(Math.sqrt(count * (window.innerWidth / window.innerHeight)));
   const rows = Math.ceil(count / cols);
   const cellW = 100 / cols;
   const cellH = 100 / rows;
 
-  // Xáo trộn thứ tự ảnh để không bị lặp pattern
   const shuffled = [...list].sort(() => Math.random() - 0.5);
 
   shuffled.forEach((src, i) => {
     const col = i % cols;
     const row = Math.floor(i / cols);
-
-    // Vị trí cơ bản + lệch ngẫu nhiên (±20% ô)
     const jitterX = (Math.random() - 0.5) * cellW * 0.6;
     const jitterY = (Math.random() - 0.5) * cellH * 0.6;
     const x = (col * cellW) + (cellW / 2) + jitterX;
     const y = (row * cellH) + (cellH / 2) + jitterY;
-
-    // Kích thước ngẫu nhiên (dao động ±15%)
     const sizeMul = 0.85 + Math.random() * 0.3;
     const w = baseSize * sizeMul;
     const h = baseSize * sizeMul;
-
-    // Góc xoay ngẫu nhiên nhẹ
     const rot = (Math.random() - 0.5) * 30;
 
-    // Delay xuất hiện — so le để có hiệu ứng "nở rộ"
     const delay = CONFIG.flowerStartTime + (i * CONFIG.flowerInterval);
     const delaySec = (delay / 1000) * SPEED;
     const durSec = 1.2 * SPEED;
 
-    // Tạo phần tử
     const item = document.createElement('div');
     item.className = 'flower-item';
     item.style.left = `calc(${x}% - ${w/2}vmin)`;
@@ -1132,33 +1086,27 @@ function buildFlowerCollage() {
     item.style.width = `${w}vmin`;
     item.style.height = `${h}vmin`;
     item.style.setProperty('--rot', `${rot}deg`);
-    item.style.zIndex = 100 + i; // ảnh sau đè ảnh trước
+    item.style.zIndex = 100 + i;
 
-    // Thẻ img bên trong
     const img = document.createElement('img');
     img.src = src;
     img.alt = `Hoa ${i + 1}`;
     img.loading = 'lazy';
     img.onerror = () => {
-      // Fallback: nếu ảnh lỗi, hiện gradient hoa
       item.style.background = `linear-gradient(135deg,
         hsl(${Math.random()*360},70%,65%),
         hsl(${Math.random()*360},70%,45%))`;
       img.remove();
     };
     item.appendChild(img);
-
     container.appendChild(item);
 
-    // Animation xuất hiện: bloom
     item.style.animation = `flowerBloom ${durSec}s ${delaySec}s cubic-bezier(.2,.9,.3,1) forwards`;
 
-    // Sau khi bloom xong, chuyển sang float nhẹ
     setTimeout(() => {
       item.style.animation = `flowerFloat ${4 + Math.random()*2}s ease-in-out infinite alternate`;
     }, (delaySec + durSec) * 1000);
 
-    // Trước khi P3 kết thúc 0.5s, fade out
     const fadeAt = CONFIG.p3EndTime * SPEED - 500;
     if (fadeAt > 0) {
       setTimeout(() => {
@@ -1169,7 +1117,14 @@ function buildFlowerCollage() {
 }
 
 /* ============================================================
-   NHẠC
+   NHẠC — TỐI ƯU CHO MOBILE (iOS Safari + Chrome Android)
+   ============================================================
+   Nguyên tắc:
+   1. Thử autoplay muted ngay khi load (mobile luôn cho phép)
+   2. Khi có gesture ĐẦU TIÊN → gọi music.play() ĐỒNG BỘ
+      trong handler (không qua Promise.then)
+   3. Dùng nhiều loại gesture + capture phase để bắt sớm
+   4. Nếu vẫn thất bại → hiện overlay "Chạm để bắt đầu"
    ============================================================ */
 const music = document.getElementById('bgMusic');
 const musicBtn = document.getElementById('musicToggle');
@@ -1179,6 +1134,10 @@ const unlockOverlay = document.getElementById('unlockOverlay');
 music.src = CONFIG.music;
 music.volume = 0;
 music.muted = true;
+
+/* Thêm thuộc tính iOS yêu cầu */
+music.setAttribute('playsinline', '');
+music.setAttribute('webkit-playsinline', '');
 
 let isUnlocked = false;
 let fadeInterval = null;
@@ -1204,34 +1163,61 @@ function setPlayingUI(playing) {
   }
 }
 
-async function tryAutoplayMuted() {
-  try {
-    music.muted = true;
-    await music.play();
-    return true;
-  } catch (e) {
-    return false;
+/* Thử autoplay muted (mobile luôn cho phép) */
+function tryAutoplayMuted() {
+  music.muted = true;
+  const p = music.play();
+  if (p && p.catch) {
+    p.catch(() => {});
   }
 }
 
-function unlockAudio() {
+/* ============================================================
+   UNLOCK AUDIO — gọi ĐỒNG BỘ trong gesture handler
+   ============================================================
+   Đây là điểm quan trọng nhất cho iOS:
+   - KHÔNG dùng async/await
+   - KHÔNG dùng Promise.then
+   - Gọi music.play() trực tiếp ngay dòng đầu
+   ============================================================ */
+function unlockAudioNow() {
   if (isUnlocked) return;
-  isUnlocked = true;
+
+  // Bước 1: gọi play() ĐỒNG BỘ ngay lập tức (iOS yêu cầu)
   music.muted = false;
-  music.volume = 0;
-  if (music.paused) {
-    music.play().then(() => {
+  const playPromise = music.play();
+
+  // Bước 2: đánh dấu đã unlock
+  isUnlocked = true;
+
+  // Bước 3: xử lý promise sau (không chặn)
+  if (playPromise && playPromise.then) {
+    playPromise.then(() => {
+      music.volume = 0;
       fadeIn();
       setPlayingUI(true);
       hideUnlockOverlay();
-    }).catch(() => showUnlockOverlay());
-  } else {
-    fadeIn();
-    setPlayingUI(true);
-    hideUnlockOverlay();
+    }).catch(() => {
+      // Nếu vẫn lỗi, thử lại với volume nhỏ
+      music.volume = 0.01;
+      music.play().then(() => {
+        fadeIn();
+        setPlayingUI(true);
+        hideUnlockOverlay();
+      }).catch(() => {
+        // Cuối cùng vẫn lỗi → hiện overlay
+        showUnlockOverlay();
+        isUnlocked = false;
+      });
+    });
   }
+
+  // Bước 4: gỡ listeners ngay (không chờ promise)
   removeUnlockListeners();
 }
+
+/* Alias để tương thích */
+const unlockAudio = unlockAudioNow;
 
 function showUnlockOverlay() {
   unlockOverlay.classList.add('show');
@@ -1242,36 +1228,85 @@ function hideUnlockOverlay() {
   setTimeout(() => unlockOverlay.classList.remove('show'), 500);
 }
 
-const gestureEvents = ['click', 'touchstart', 'keydown', 'mousedown', 'pointerdown'];
+/* ============================================================
+   GESTURE LISTENERS — bắt sớm, capture phase, không passive
+   ============================================================
+   - capture: true  → bắt trước khi event lan xuống
+   - passive: false → cho phép preventDefault nếu cần
+   - Nhiều loại event → tăng cơ hội bắt được gesture đầu tiên
+   ============================================================ */
+const gestureEvents = [
+  'touchstart',
+  'touchend',
+  'pointerdown',
+  'pointerup',
+  'mousedown',
+  'mouseup',
+  'click',
+  'keydown',
+];
+
 function addUnlockListeners() {
-  gestureEvents.forEach(evt => document.addEventListener(evt, unlockAudio, { passive: true }));
+  gestureEvents.forEach(evt => {
+    document.addEventListener(evt, unlockAudioNow, {
+      capture: true,
+      passive: false,
+    });
+    window.addEventListener(evt, unlockAudioNow, {
+      capture: true,
+      passive: false,
+    });
+  });
 }
+
 function removeUnlockListeners() {
-  gestureEvents.forEach(evt => document.removeEventListener(evt, unlockAudio));
+  gestureEvents.forEach(evt => {
+    document.removeEventListener(evt, unlockAudioNow, { capture: true });
+    window.removeEventListener(evt, unlockAudioNow, { capture: true });
+  });
 }
 
-unlockOverlay.addEventListener('click', unlockAudio);
-unlockOverlay.addEventListener('touchstart', unlockAudio);
+/* Overlay click/touch → unlock ngay */
+unlockOverlay.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  unlockAudioNow();
+}, { passive: false });
+unlockOverlay.addEventListener('click', (e) => {
+  e.preventDefault();
+  unlockAudioNow();
+});
 
+/* ============================================================
+   VISIBILITY CHANGE — chỉ phát lại nếu đã unlock thành công
+   ============================================================ */
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && music.paused && isUnlocked) {
-    music.play().then(() => { fadeIn(); setPlayingUI(true); }).catch(() => {});
+  if (!document.hidden && isUnlocked && music.paused) {
+    music.play().catch(() => {});
   }
 });
 
-music.addEventListener('play',  () => setPlayingUI(true));
+/* Đồng bộ UI */
+music.addEventListener('play', () => setPlayingUI(true));
 music.addEventListener('pause', () => setPlayingUI(false));
 
+/* ============================================================
+   NÚT BẬT/TẮT NHẠC — cũng là gesture unlock
+   ============================================================ */
 musicBtn.addEventListener('click', (e) => {
   e.stopPropagation();
+  e.preventDefault();
+
+  if (!isUnlocked) {
+    // Lần đầu bấm nút → unlock và phát
+    unlockAudioNow();
+    return;
+  }
+
   if (music.paused) {
     music.muted = false;
     music.play().then(() => {
       if (music.volume === 0) fadeIn();
       setPlayingUI(true);
-      hideUnlockOverlay();
-      isUnlocked = true;
-      removeUnlockListeners();
     }).catch(() => {});
   } else {
     music.pause();
@@ -1279,14 +1314,27 @@ musicBtn.addEventListener('click', (e) => {
   }
 });
 
-async function initAutoplay() {
-  const ok = await tryAutoplayMuted();
+musicBtn.addEventListener('touchstart', (e) => {
+  e.stopPropagation();
+  // Không preventDefault để tránh chặn click
+}, { passive: true });
+
+/* ============================================================
+   KHỞI ĐỘNG AUTOPLAY
+   ============================================================ */
+function initAutoplay() {
+  // Bước 1: thử autoplay muted ngay
+  tryAutoplayMuted();
+
+  // Bước 2: đăng ký gesture listeners NGAY LẬP TỨC
   addUnlockListeners();
-  if (!ok) {
-    setTimeout(() => { if (music.paused) showUnlockOverlay(); }, 1500 * SPEED);
-  } else {
-    setTimeout(() => { if (music.muted && !isUnlocked) showUnlockOverlay(); }, 2000 * SPEED);
-  }
+
+  // Bước 3: sau 1.5s nếu vẫn chưa unlock → hiện overlay
+  setTimeout(() => {
+    if (!isUnlocked && music.muted) {
+      showUnlockOverlay();
+    }
+  }, 1500 * SPEED);
 }
 
 /* ============================================================
@@ -1310,7 +1358,6 @@ CONFIG.counters.forEach(c => {
 });
 
 setTimeout(() => replayBtn.classList.add('show'), CONFIG.totalDuration);
-
 replayBtn.addEventListener('click', () => location.reload());
 
 /* ============================================================
@@ -1333,23 +1380,21 @@ setInterval(() => {
    KHỞI ĐỘNG
    ============================================================ */
 window.addEventListener('DOMContentLoaded', () => {
-  // Áp dụng SPEED cho CSS animation
   applySpeedToCSS();
-
-  // Sinh collage ảnh hoa cho P3
   buildFlowerCollage();
-
-  // Khởi động autoplay nhạc
   initAutoplay();
 
-  // Kiểm tra file nhạc
   fetch(CONFIG.music, { method: 'HEAD' })
     .then(r => { if (!r.ok) console.warn('[20/11] ⚠️ Không tìm thấy nhạc:', CONFIG.music); })
     .catch(() => console.warn('[20/11] ⚠️ Không tải được nhạc:', CONFIG.music));
-
-  console.log('[20/11] SPEED =', SPEED, '| Tổng thời gian =', (CONFIG.totalDuration/1000).toFixed(1) + 's');
-  console.log('[20/11] Số ảnh hoa:', CONFIG.flowers.length);
 });
+
+/* Fallback: nếu DOMContentLoaded đã chạy trước khi script load */
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+  applySpeedToCSS();
+  buildFlowerCollage();
+  initAutoplay();
+}
 </script>
 </body>
 </html>
